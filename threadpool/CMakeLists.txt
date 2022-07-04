@@ -4,13 +4,18 @@ message(STATUS "PROJECT SOURCE DIR IS ${PROJECT_SOURCE_DIR}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
 
-set(ThreadPoolSRCS ${CMAKE_CURRENT_SOURCE_DIR}/ThreadPool.c)
-set(TaskQueueSRCS ${CMAKE_CURRENT_SOURCE_DIR}/TaskQueue.cpp TaskQueueC_API.cpp TaskQueueC_API.h)
+#set(ThreadPoolSRCS ${CMAKE_CURRENT_SOURCE_DIR}/ThreadPool.c)
+
+set(TaskQueueSRCS ${CMAKE_CURRENT_SOURCE_DIR}/TaskQueue.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/TaskQueueC_API.cpp)
 #message(STATUS "SRCS are ${SRCS}")
 add_library(TaskQueue SHARED ${TaskQueueSRCS})
-add_library(ThreadPool SHARED ${ThreadPoolSRCS})
+target_include_directories(TaskQueue PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/TaskQueueC_API.h)
 
-target_link_libraries(ThreadPool PRIVATE TaskQueue)
+#add_library(ThreadPool SHARED ${ThreadPoolSRCS})
+#
+#target_link_libraries(ThreadPool PRIVATE TaskQueue)
 
 #target_link_libraries(${PROJECT_NAME} PRIVATE TaskQueue)
 #target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

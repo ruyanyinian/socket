@@ -2,11 +2,11 @@
 // Created by qinyu on 2022/7/3.
 //
 #include "TaskQueue.h"
-
+#include <string.h>
 #include "TaskQueueC_API.h"
 
 // 创建taskqueue的对象
-TaskQueue *createTaskQueue(int capacity) {
+TaskQueue *createTaskQueue() {
   TaskQueue *taskQueue = new TaskQueue();
   return taskQueue;
 }
@@ -35,6 +35,3 @@ Task *dequeue(TaskQueue *taskQueue) {
   return ptask;
 }
 
-//void setArgs(TaskQueue *taskQueue, void *args) {
-//
-//}
