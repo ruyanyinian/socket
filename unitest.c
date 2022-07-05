@@ -4,9 +4,16 @@
 #include "threadpool/TaskQueueC_API.h"
 #include <stdio.h>
 
+void print(void *a) {
+  int *pA = (int*)a;
+  printf("the function will print %d\n", *pA);
+}
 int main() {
-  TaskQueue *taskQueue = createTaskQueue();
-  int ans = getSize(taskQueue);
-  printf("the %d", ans);
+  void *pTaskQueue = createTaskQueue();
+  int a = 10;
+  void *task = createTask(print, &a);
+  enqueue(pTaskQueue, task);
+  Callback func = dequeue(task);
+  func(&a);
   return 0;
 }

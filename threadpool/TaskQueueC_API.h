@@ -16,17 +16,22 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-  typedef struct Task Task;
-  typedef struct TaskQueue TaskQueue;
-  // 创建taskqueue的对象
-  TaskQueue *createTaskQueue();
+  // NOTE: 我们是不是包一层C接口的时候, 只需要用到基础类型就可以了, 其他的类型是不需要的? 比如Task *createTask(); 可以写成 void *createTask() \
+  这里全部变成基础类型的就可以了, 然后返回值或者形参本来是具体的类的指针的, 这下全部变成void*, 然后通过强制类型转换就可以了.
+  typedef void (*Callback)(void*);
+
+  void *createTaskQueue();
+  void *createTask(Callback func, void *arg);
   // 释放对象
-  void destroyTaskQueue(TaskQueue* taskQueue);
-  int getSize(TaskQueue* taskQueue);
-  int getCapacity(TaskQueue *taskQueue);
+  void destroyTaskQueue(void* taskQ);
+  void destroyTask(void *task);
+  int getSize(void *taskQueue);
+  int getCapacity(void *taskQueue);
   // 入队
-  void enqueue(TaskQueue *taskQueue, const Task *task);
-  Task *dequeue(TaskQueue *taskQueue);
+  void enqueue(void *taskQueue, void *task);
+  void *dequeue(void *taskQueue);
+
+
 #ifdef __cplusplus
 }
 #endif

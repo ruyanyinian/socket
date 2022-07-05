@@ -4,34 +4,56 @@
 #include "TaskQueue.h"
 #include <string.h>
 #include "TaskQueueC_API.h"
-
 // 创建taskqueue的对象
-TaskQueue *createTaskQueue() {
+void *createTaskQueue() {
   TaskQueue *taskQueue = new TaskQueue();
   return taskQueue;
 }
 
-// 释放对象
-void destroyTaskQueue(TaskQueue *taskQueue) {
-
+void *createTask(Callback func, void *arg) {
+  Task *task = new Task(func, arg);
+  return task;
 }
-int getSize(TaskQueue *taskQueue) {
+
+// 释放对象
+void destroyTaskQueue(void *taskQ) {
+  TaskQueue *taskQueue = (TaskQueue *)taskQ;
+  if (taskQ != nullptr) {
+    //delete taskQueue;  FIXME: taskqueue.cpp确实没有定义析构函数
+    taskQ = nullptr;
+  }
+}
+
+void destroyTask(void *task) {
+  Task *pTask = (Task*)task;
+  if (pTask != nullptr) {
+    delete pTask;
+    pTask = nullptr;
+  }
+}
+
+int getSize(void *taskQ) {
+  TaskQueue *taskQueue = (TaskQueue*)taskQ;
   return taskQueue->getSize();
 }
 
-int getCapacity(TaskQueue *taskQueue) {
+int getCapacity(void *taskQ) {
+  TaskQueue *taskQueue = (TaskQueue *)taskQ;
   return taskQueue->getCapacity();
 }
-// 入队
 
-void enqueue(TaskQueue *taskQueue, const Task *task) {
+
+// 入队
+void enqueue(void *taskQ, void *ptask) {
+  TaskQueue *taskQueue = (TaskQueue *)taskQ;
+  Task *task = (Task *)ptask;
   taskQueue->enTaskQueue(*task);
 }
 
-Task *dequeue(TaskQueue *taskQueue) {
-  Task task = taskQueue->deTaskQueue();
-  Task *ptask = (Task*) malloc(sizeof(task) * 1);
-  memcpy(ptask, &task, sizeof(Task)*1);
-  return ptask;
+void *dequeue(void *taskQ) {
+  TaskQueue *taskQueue = (TaskQueue*)taskQ;
+  Task t = taskQueue->deTaskQueue();
+  Task *task = new Task(t.m_func, t.m_arg); // NOTE: 注意对task这里需要进行析构
+  return task;
 }
 
