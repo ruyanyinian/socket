@@ -6,12 +6,14 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
 #set(ThreadPoolSRCS ${CMAKE_CURRENT_SOURCE_DIR}/ThreadPool.c)
 
-set(TaskQueueSRCS ${CMAKE_CURRENT_SOURCE_DIR}/TaskQueue.cpp
+set(TaskQueueSRCS
+        ${CMAKE_CURRENT_SOURCE_DIR}/TaskQueue.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/TaskQueueC_API.cpp)
-#message(STATUS "SRCS are ${SRCS}")
+
+
 add_library(TaskQueue SHARED ${TaskQueueSRCS})
 target_include_directories(TaskQueue PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/TaskQueueC_API.h)
+        ${CMAKE_CURRENT_SOURCE_DIR})
 
 #add_library(ThreadPool SHARED ${ThreadPoolSRCS})
 #
