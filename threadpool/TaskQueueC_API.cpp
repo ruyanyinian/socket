@@ -3,7 +3,7 @@
 //
 #include "TaskQueue.h"
 #include <string.h>
-#include "TaskQueueC_API.h"
+#include "TaskQueueC_API.h" // 这里包含taskQUueueC_API头文件很重要, 如果不包含的话会对函数名字进行混淆
 // 创建taskqueue的对象
 void *createTaskQueue() {
   TaskQueue *taskQueue = new TaskQueue();
