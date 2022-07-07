@@ -13,7 +13,7 @@ int main() {
   int a = 10;
   void *task = createTask(print, &a);
   enqueue(pTaskQueue, task);
-  Callback func = dequeue(task);
-  func(&a);
+  TaskC *ptask = (TaskC*)dequeue(pTaskQueue);
+  ptask->m_func(ptask->m_arg);
   return 0;
 }
