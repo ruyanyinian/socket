@@ -2,7 +2,9 @@
 #include <unistd.h>
 #include <string.h>
 #include <arpa/inet.h> // 这个头文件包含了sys/socket.h, 所以我们套接字通信一般是包含这个头文件就可以了.
-#include <pthread.h>
+#include "server.h"
+// 线程池来进行服务器的并发
+
 
 typedef struct SockInfo {
   struct sockaddr_in addr;
@@ -13,6 +15,8 @@ typedef struct SockInfo {
 // Note: 这里我们需要一个数组进行存储结构体信息, 因为我们传入的是地址, 多个客户端的东西fd和addr是不一样的
 // 如果不定义数组的话, 我们第一个客户端正在通信的同时就可能
 SockInfo infos[512];
+
+
 
 void *working(void *arg) {
   SockInfo *pinfo = (struct SockInfo*)arg;
