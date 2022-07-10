@@ -15,8 +15,7 @@ ThreadPool::ThreadPool(int minNum, int maxNum) {
 
     // 根据线程的最大上限给线程数组分配内存
     m_threadIDs = new pthread_t[maxNum];
-    if (m_threadIDs == nullptr)
-    {
+    if (m_threadIDs == nullptr) {
       std::cout << "malloc thread_t[] 失败...." << std::endl;;
       break;
     }
@@ -24,16 +23,14 @@ ThreadPool::ThreadPool(int minNum, int maxNum) {
     memset(m_threadIDs, 0, sizeof(pthread_t) * maxNum);
     // 初始化互斥锁,条件变量
     if (pthread_mutex_init(&m_lock, NULL) != 0 ||
-        pthread_cond_init(&m_notEmpty, NULL) != 0)
-    {
+        pthread_cond_init(&m_notEmpty, NULL) != 0) {
       cout << "init mutex or condition fail..." << endl;
       break;
     }
 
     /////////////////// 创建线程 //////////////////
     // 根据最小线程个数, 创建线程
-    for (int i = 0; i < minNum; ++i)
-    {
+    for (int i = 0; i < minNum; ++i) {
       pthread_create(&m_threadIDs[i], NULL, worker, this);
       cout << "创建子线程, ID: " << to_string(m_threadIDs[i]) << endl;
     }
@@ -47,8 +44,7 @@ ThreadPool::~ThreadPool() {
   // 销毁管理者线程
   pthread_join(m_managerID, NULL);
   // 唤醒所有消费者线程
-  for (int i = 0; i < m_aliveNum; ++i)
-  {
+  for (int i = 0; i < m_aliveNum; ++i) {
     pthread_cond_signal(&m_notEmpty);
   }
 
@@ -59,8 +55,7 @@ ThreadPool::~ThreadPool() {
 }
 
 void ThreadPool::addTask(Task task) {
-  if (m_shutdown)
-  {
+  if (m_shutdown) {
     return;
   }
   // 添加任务，不需要加锁，任务队列中有锁

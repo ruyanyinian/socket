@@ -9,6 +9,8 @@
 #include <iostream>
 #include <unistd.h>
 using namespace std;
+
+
 class ThreadPool {
 public:
   ThreadPool(int min, int max);
@@ -23,9 +25,9 @@ public:
 
 private:
   // 工作的线程的任务函数
-  static void* worker(void* arg);
+  static void *worker(void* arg);
   // 管理者线程的任务函数
-  static void* manager(void* arg);
+  static void *manager(void* arg);
   void threadExit();
 
 private:

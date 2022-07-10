@@ -15,17 +15,16 @@ struct Task {
     function = nullptr;
     arg = nullptr;
   }
-  Task(callback f, void* arg) {
+  Task(callback f, void *arg) {
     function = f;
     this->arg = arg;
   }
   callback function;
-  void* arg;
+  void *arg;
 };
 
 // 任务队列
-class TaskQueue
-{
+class TaskQueue {
 public:
   TaskQueue();
   ~TaskQueue();
